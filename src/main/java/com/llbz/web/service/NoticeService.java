@@ -14,15 +14,19 @@ public class NoticeService implements NoticeServiceable {
     private NoticeDaoable noticeDaoable;
 
     @Override
-    public ArrayList<Notice> getNoticeList() {
+    public ArrayList<Notice> getList() {
+        //실제 DB 칼럼명: id, title, writer_id, regdate, hit 
         ArrayList<Notice> noticeList;
-        noticeList = noticeDaoable.getList(10);
-
-        
-
+        noticeList = noticeDaoable.getList(7);
         
         return noticeList;
     }
-    
+
+    @Override
+    public Notice getById(int id) {
+        Notice notice;
+        notice = noticeDaoable.getById(id);
+        return notice;
+    }
 
 }

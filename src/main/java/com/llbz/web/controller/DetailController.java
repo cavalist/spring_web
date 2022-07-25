@@ -12,16 +12,16 @@ import com.llbz.web.service.NoticeServiceable;
 
 @Controller
 @RequestMapping("/notice/")
-public class NoticeController {
+public class DetailController {
     @Autowired
     private NoticeServiceable noticeServiceable;
 
-    @RequestMapping("list")
-    public void list(Model model){
+    @RequestMapping("detail")
+    public void list(Model model, int id){
     
-        System.out.println("noticeController Test");
-        ArrayList<Notice> noticeList = noticeServiceable.getList();
-        model.addAttribute("noticeList", noticeList);
+        Notice notice = noticeServiceable.getById(id);
+        System.out.println(notice);
+        model.addAttribute("notice", notice);
 
         
     }

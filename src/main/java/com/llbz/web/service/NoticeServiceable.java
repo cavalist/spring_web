@@ -5,5 +5,7 @@ import java.util.ArrayList;
 import com.llbz.web.model.Notice;
 
 public interface NoticeServiceable {
-    public ArrayList<Notice> getNoticeList();
+    public ArrayList<Notice> getList();
+
+    public Notice getById(int id);
 }
