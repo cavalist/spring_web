@@ -23,7 +23,7 @@ public class NoticeDao implements NoticeDaoable {
     @Override
     public Notice getById(int id) {
         // title regdate, writer_id, hit, file
-        Notice notice = null;
+        Notice notice = new Notice();
         String[] columns = { "title", "regdate", "writer_id", "hit", "files" };
         String columns_ = String.join(", ", columns);
         String sql = "SELECT " + columns_ + " FROM NOTICE "
@@ -40,18 +40,12 @@ public class NoticeDao implements NoticeDaoable {
                 String writerId = rs.getString("writer_id");
                 int hit = rs.getInt("hit");
                 String files = rs.getString("files");
-
-                notice = new Notice(
-
-                        title,
-                        writerId,
-
-                        regDate,
-                        hit,
-                        files
-
-                );
-
+                
+                notice.setTitle(title);
+                notice.setRegDate(regDate);
+                notice.setWriterId(writerId);
+                notice.setHit(hit);
+                notice.setFiles(files);
             }
             rs.close();
             st.close();
@@ -92,13 +86,13 @@ public class NoticeDao implements NoticeDaoable {
                 Date regDate = rs.getDate("regdate");
                 int hit = rs.getInt("hit");
 
-                System.out.println(id);
-                Notice notice = new Notice(
-                        id,
-                        title,
-                        writerId,
-                        regDate,
-                        hit);
+                Notice notice = new Notice();
+                notice.setId(id);
+                notice.setTitle(title);
+                notice.setWriterId(writerId);
+                notice.setRegDate(regDate);
+                notice.setHit(hit);
+
                 noticeList.add(notice);
             }
 
