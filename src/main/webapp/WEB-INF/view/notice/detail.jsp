@@ -177,7 +177,7 @@
 					</div>
 					
 					<div class="margin-top text-align-center">
-						<a class="btn btn-list" href="list.html">목록</a>
+						<a class="btn btn-list" href="list">목록</a>
 					</div>
 					
 					<div class="margin-top">
@@ -186,7 +186,7 @@
 								
 								<tr>
 									<th>다음글</th>
-									<td colspan="3"  class="text-align-left text-indent">다음글이 없습니다.</td>
+									<td colspan="3"  class="text-align-left text-indent"><a href="detail?id=${nextNotice.id}">${nextNotice.title}</a></td>
 								</tr>
 								
 									
@@ -194,7 +194,7 @@
 								
 								<tr>
 									<th>이전글</th>
-									<td colspan="3"  class="text-align-left text-indent"><a class="text-blue text-strong" href="">스프링 DI 예제 코드</a></td>
+									<td colspan="3"  class="text-align-left text-indent"><a class="text-blue text-strong" href="detail?id=${prevNotice.id}">${prevNotice.title}</a></td>
 								</tr>
 								
 								

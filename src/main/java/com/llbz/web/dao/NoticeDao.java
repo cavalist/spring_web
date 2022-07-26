@@ -59,7 +59,7 @@ public class NoticeDao implements NoticeDaoable {
     }
 
     @Override
-    public ArrayList<Notice> getList(int rowCnt) {
+    public ArrayList<Notice> getList(int page, int rowCnt) {
         // 실제 DB 칼럼명: id, title, writer_id, regdate, hit
         ArrayList<Notice> noticeList = new ArrayList<Notice>();
         String[] columns = { "id", "title", "writer_id", "regdate", "hit" };
@@ -69,13 +69,17 @@ public class NoticeDao implements NoticeDaoable {
                 + "SELECT ROWNUM NUM, N.* FROM ("
                 + "SELECT * FROM NOTICE ORDER BY REGDATE DESC"
                 + ") N"
-                + ") WHERE NUM BETWEEN 1 AND ?";
+                + ") WHERE NUM BETWEEN ? AND ?";
 
         try {
             Connection con = dataSource.getConnection();
             PreparedStatement st = con.prepareStatement(sql);
 
-            st.setInt(1, rowCnt);
+            int firstNum = rowCnt*(page-1) + 1;
+            int lastNum = rowCnt*page;
+
+            st.setInt(1, firstNum);
+            st.setInt(2, lastNum);
 
             ResultSet rs = st.executeQuery();
 
@@ -106,5 +110,90 @@ public class NoticeDao implements NoticeDaoable {
 
         return noticeList;
     }
+
+    @Override
+    public Notice getPrevById(int id) {
+        Notice notice = new Notice();
+        String sql = 
+        "SELECT ID, TITLE FROM NOTICE_ORDERED_VIEW WHERE NUM = "
+        +"(SELECT NUM FROM notice_ordered_view WHERE ID = " + id + ") - 1";
+            try {
+                Connection con = dataSource.getConnection();
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+    
+                while (rs.next()) {
+                    int prevId = rs.getInt("id");
+                    String title = rs.getString("title");
+                    
+                    notice.setId(prevId);
+                    notice.setTitle(title);
+                    
+                }
+                rs.close();
+                st.close();
+                con.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+    
+            return notice;
+    }
+
+    @Override
+    public Notice getNextById(int id) {
+        Notice notice = new Notice();
+        String sql = 
+        "SELECT ID, TITLE FROM NOTICE_ORDERD_VIEW WHERE NUM = "
+        +"(SELECT NUM FROM notice_orderd_view WHERE ID = " + id + ") + 1";
+            try {
+                Connection con = dataSource.getConnection();
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+    
+                while (rs.next()) {
+                    int nextId = rs.getInt("id");
+                    String title = rs.getString("title");
+                    
+                    notice.setId(nextId);
+                    notice.setTitle(title);
+                    
+                }
+                rs.close();
+                st.close();
+                con.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+    
+            return notice;
+    }
+
+    @Override
+    public int getCount() {
+        int cnt = 0;
+        String sql =
+        "SELECT count(*) count FROM notice_ordered_view";
+        try {
+            Connection con = dataSource.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                cnt = rs.getInt("count");
+                
+            }
+            rs.close();
+            st.close();
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return cnt;
+    }
+    
 
 }

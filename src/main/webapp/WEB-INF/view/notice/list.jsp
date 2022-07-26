@@ -196,26 +196,31 @@
 			
 			<div class="indexer margin-top align-right">
 				<h3 class="hidden">현재 페이지</h3>
-				<div><span class="text-orange text-strong">1</span> / 1 pages</div>
+				<div><span class="text-orange text-strong">${page}</span> / ${pager.count} pages</div>
 			</div>
 
 			<div class="margin-top align-center pager">	
 		
 	<div>
 		
-		
-		<span class="btn btn-prev" onclick="alert('이전 페이지가 없습니다.');">이전</span>
+		<c:if test="${page > pager.size}">
+		<a class="btn btn-prev" href="?page=${page - pager.size}">이전</a>
+		</c:if>
+
 		
 	</div>
 	<ul class="-list- center">
-		<li><a class="-text- orange bold" href="?p=1&t=&q=" >1</a></li>
+		<c:forEach var="n" begin="${pager.viewStart}" end="${pager.viewEnd}">
+		<li><a class="-text- orange bold" href="?page=${n}" >${n}</a></li>
+		</c:forEach>
 				
 	</ul>
 	<div>
 		
-		
-			<span class="btn btn-next" onclick="alert('다음 페이지가 없습니다.');">다음</span>
-		
+			<c:if test="${pager.viewEnd < pager.count}">
+			<a class="btn btn-next" href="?page=${page + pager.size}">다음</a>
+			</c:if>
+	
 	</div>
 	
 			</div>
