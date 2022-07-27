@@ -6,9 +6,9 @@ import com.llbz.web.model.Notice;
 
 public interface NoticeDaoable {
     public Notice getById(int id);
-    public ArrayList<Notice> getList(int page, int rowCnt);
+    public ArrayList<Notice> getList(int page, int rowCnt, String field, String query);
     public Notice getPrevById(int id);
     public Notice getNextById(int id);
-    public int getCount();
+    public int getCount(String filed, String query);
 }
 

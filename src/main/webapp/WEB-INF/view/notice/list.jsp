@@ -68,9 +68,9 @@
                     <nav id="acount-menu">
                         <h1 class="hidden">회원메뉴</h1>
                         <ul>
-                            <li><a href="/index.html">HOME</a></li>
-                            <li><a href="/member/login.html">로그인</a></li>
-                            <li><a href="/member/agree.html">회원가입</a></li>
+                            <li><a href="/index">HOME</a></li>
+                            <li><a href="/member/login">로그인</a></li>
+                            <li><a href="/member/agree">회원가입</a></li>
                         </ul>
                     </nav>
 
@@ -78,7 +78,7 @@
                         <h1 class="hidden">고객메뉴</h1>
                         <ul class="linear-layout">
                             <li><a href="/member/home"><img src="/images/txt-mypage.png" alt="마이페이지" /></a></li>
-                            <li><a href="/notice/list.html"><img src="/images/txt-customer.png" alt="고객센터" /></a></li>
+                            <li><a href="/notice/list"><img src="/images/txt-customer.png" alt="고객센터" /></a></li>
                         </ul>
                     </nav>
 
@@ -151,11 +151,11 @@
 						<legend class="hidden">공지사항 검색 필드</legend>
 						<label class="hidden">검색분류</label>
 						<select name="f">
-							<option  value="title">제목</option>
-							<option  value="writerId">작성자</option>
+							<option ${(f == "title")?"selected":""} value="title">제목</option>
+							<option ${(f == "writer_id")?"selected":""} value="writer_id">작성자</option>
 						</select> 
 						<label class="hidden">검색어</label>
-						<input type="text" name="q" value=""/>
+						<input type="text" name="q" value="${q}"/>
 						<input class="btn btn-search" type="submit" value="검색" />
 					</fieldset>
 				</form>
@@ -196,29 +196,29 @@
 			
 			<div class="indexer margin-top align-right">
 				<h3 class="hidden">현재 페이지</h3>
-				<div><span class="text-orange text-strong">${page}</span> / ${pager.count} pages</div>
+				<div><span class="text-orange text-strong">${p}</span> / ${pager.count} pages</div>
 			</div>
 
 			<div class="margin-top align-center pager">	
 		
 	<div>
 		
-		<c:if test="${page > pager.size}">
-		<a class="btn btn-prev" href="?page=${page - pager.size}">이전</a>
+		<c:if test="${p > pager.size}">
+		<a class="btn btn-prev" href="?p=${pager.prev}&f=${f}&q=${q}">이전</a>
 		</c:if>
 
 		
 	</div>
 	<ul class="-list- center">
 		<c:forEach var="n" begin="${pager.viewStart}" end="${pager.viewEnd}">
-		<li><a class="-text- orange bold" href="?page=${n}" >${n}</a></li>
+		<li><a class="-text- orange bold" href="?p=${n}&f=${f}&q=${q}" >${n}</a></li>
 		</c:forEach>
 				
 	</ul>
 	<div>
 		
 			<c:if test="${pager.viewEnd < pager.count}">
-			<a class="btn btn-next" href="?page=${page + pager.size}">다음</a>
+			<a class="btn btn-next" href="?p=${pager.next}&f=${f}&q=${q}">다음</a>
 			</c:if>
 	
 	</div>

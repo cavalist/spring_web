@@ -5,7 +5,8 @@ public class Pager {
     private int count;
     private int viewStart;
     private int viewEnd;
-    
+    private int prev;
+    private int next;
     public int getSize() {
         return size;
     }
@@ -30,6 +31,19 @@ public class Pager {
     public void setViewEnd(int viewEnd) {
         this.viewEnd = viewEnd;
     }
-
+    public int getPrev() {
+        return prev;
+    }
+    public void setPrev(int prev) {
+        this.prev = prev;
+    }
+    public int getNext() {
+        return next;
+    }
+    public void setNext(int next) {
+        this.next = next;
+    }
+    
+    
     
 }

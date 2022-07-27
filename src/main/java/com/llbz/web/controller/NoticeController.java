@@ -15,21 +15,30 @@ import com.llbz.web.service.NoticeServiceable;
 @Controller
 @RequestMapping("/notice/")
 public class NoticeController {
-    private final int rowCnt = 7;
     private final int pagerSize = 5;
     
     @Autowired
     private NoticeServiceable noticeServiceable;
 
     @RequestMapping("list")
-    public void list(Model model, @RequestParam(name="page", defaultValue = "1") int page) {
-
-        model.addAttribute("page", page);
+    public void list(
+        Model model, 
+        @RequestParam(name="p", defaultValue = "1") int page,
+        @RequestParam(name="f", defaultValue = "title")String filed,
+        @RequestParam(name="q", defaultValue = "")String query,
+        @RequestParam(name="r", defaultValue = "7")int rowCnt
+        ) {
         
-        ArrayList<Notice> noticeList = noticeServiceable.getList(page, rowCnt);
+        model.addAttribute("p", page);
+        model.addAttribute("f", filed);
+        model.addAttribute("q", query);
+        
+        ArrayList<Notice> noticeList = noticeServiceable.getList(page, rowCnt, filed, query);
         model.addAttribute("noticeList", noticeList);
+        
+        int noticeCount = noticeServiceable.getCount(filed, query);
 
-        Pager pager = noticeServiceable.getPager(pagerSize, page, rowCnt);
+        Pager pager = noticeServiceable.getPager(pagerSize, page, rowCnt, noticeCount);
         model.addAttribute("pager", pager);
     
     }

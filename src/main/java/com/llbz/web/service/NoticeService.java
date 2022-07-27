@@ -15,20 +15,14 @@ public class NoticeService implements NoticeServiceable {
     private NoticeDaoable noticeDaoable;
 
     @Override
-    public ArrayList<Notice> getList(int page, int rowCnt) {
+    public ArrayList<Notice> getList(int page, int rowCnt, String filed, String query) {
         //실제 DB 칼럼명: id, title, writer_id, regdate, hit 
         ArrayList<Notice> noticeList;
-        noticeList = noticeDaoable.getList(page, rowCnt);
+        noticeList = noticeDaoable.getList(page, rowCnt, filed, query);
         
         return noticeList;
     }
-    @Override
-    public ArrayList<Notice> getList(int rowCnt) {
-        ArrayList<Notice> noticeList;
-        noticeList = getList(1, rowCnt);
-        
-        return noticeList;
-    }
+ 
 
     @Override
     public Notice getById(int id) {
@@ -51,23 +45,18 @@ public class NoticeService implements NoticeServiceable {
         return notice;
     }
     @Override
-    public int getCount() {
-        int cnt = noticeDaoable.getCount();
+    public int getCount(String filed, String query) {
+        int cnt = noticeDaoable.getCount(filed, query);
         return cnt;
     }
+  
     @Override
-    public int getPagerStartPage(int page, int pagerSize) {
-        int pagerStartPage = page - ((page + pagerSize - 1) % pagerSize);
-
-        return pagerStartPage;
-    }
-    @Override
-    public Pager getPager(int size, int page, int rowCnt) {
+    public Pager getPager(int size, int page, int rowCnt, int noticeCount) {
         Pager pager = new Pager();
         
         pager.setSize(size);
 
-        int noticeCount = getCount();
+        
         int pagerCount = noticeCount / rowCnt;
         if (noticeCount % rowCnt > 0)
             pagerCount += 1;
@@ -75,10 +64,24 @@ public class NoticeService implements NoticeServiceable {
         pager.setCount(pagerCount);
         
         int viewStart = page - ((page + size - 1) % size);
+    
         int viewEnd = viewStart + size - 1;
+        if (pagerCount < viewEnd)
+            viewEnd = pagerCount;
 
         pager.setViewStart(viewStart);
         pager.setViewEnd(viewEnd);
+
+        int prev = page - size;
+        if (prev < 1)
+            prev = 1;
+        pager.setPrev(prev);
+        
+        int next = page + size;
+        if (next > pagerCount)
+            next = pagerCount;
+        pager.setNext(next);
+        
         return pager;
     }
     

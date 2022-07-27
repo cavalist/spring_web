@@ -1,5 +1,6 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
@@ -32,7 +33,7 @@
             <!-- ---------------------------<header>--------------------------------------- -->
 
             <h1 id="logo">
-                <a href="/index.html">
+                <a href="/index">
                     <img src="/images/logo.png" alt="뉴렉처 온라인" />
 
                 </a>
@@ -68,9 +69,9 @@
                     <nav id="acount-menu">
                         <h1 class="hidden">회원메뉴</h1>
                         <ul>
-                            <li><a href="/index.html">HOME</a></li>
-                            <li><a href="/member/login.html">로그인</a></li>
-                            <li><a href="/member/agree.html">회원가입</a></li>
+                            <li><a href="/index">HOME</a></li>
+                            <li><a href="/member/login">로그인</a></li>
+                            <li><a href="/member/agree">회원가입</a></li>
                         </ul>
                     </nav>
 
@@ -78,7 +79,7 @@
                         <h1 class="hidden">고객메뉴</h1>
                         <ul class="linear-layout">
                             <li><a href="/member/home"><img src="/images/txt-mypage.png" alt="마이페이지" /></a></li>
-                            <li><a href="/notice/list.html"><img src="/images/txt-customer.png" alt="고객센터" /></a></li>
+                            <li><a href="/notice/list"><img src="/images/txt-customer.png" alt="고객센터" /></a></li>
                         </ul>
                     </nav>
 
@@ -167,7 +168,14 @@
 								</tr>
 								<tr>
 									<th>첨부파일</th>
-									<td colspan="3">${notice.files}</td>
+									<td colspan="3" stype="text-align:left;text-indent:10px;">
+                                    <c:forTokens var="fileName" items="${notice.files}" delims="," varStatus="st">
+                                        <a href="${fileName}">${fileName}</a>
+                                        <c:if test="${!st.last}">
+                                        /
+                                        </c:if>
+                                    </c:forTokens>
+                                    </td>
 								</tr>
 								<tr class="content">
 									<td colspan="4">안녕하세요. 뉴렉처입니다.<div><br></div><div>현재 진행중인 스프링 DI 8강까지의 예제입니다.</div><div><br></div><div><a href="http://www.newlecture.com/resource/spring2.zip"><b><u><font size="5" color="#dd8a00">예제 다운로드하기</font></u></b></a></div><div><br></div><div><br></div></td>

@@ -59,7 +59,7 @@ public class NoticeDao implements NoticeDaoable {
     }
 
     @Override
-    public ArrayList<Notice> getList(int page, int rowCnt) {
+    public ArrayList<Notice> getList(int page, int rowCnt, String field, String query) {
         // 실제 DB 칼럼명: id, title, writer_id, regdate, hit
         ArrayList<Notice> noticeList = new ArrayList<Notice>();
         String[] columns = { "id", "title", "writer_id", "regdate", "hit" };
@@ -67,7 +67,7 @@ public class NoticeDao implements NoticeDaoable {
 
         String sql = "SELECT " + columns_ + " FROM ("
                 + "SELECT ROWNUM NUM, N.* FROM ("
-                + "SELECT * FROM NOTICE ORDER BY REGDATE DESC"
+                + "SELECT * FROM NOTICE WHERE "+ field + " LIKE ? ORDER BY REGDATE DESC"
                 + ") N"
                 + ") WHERE NUM BETWEEN ? AND ?";
 
@@ -78,8 +78,9 @@ public class NoticeDao implements NoticeDaoable {
             int firstNum = rowCnt*(page-1) + 1;
             int lastNum = rowCnt*page;
 
-            st.setInt(1, firstNum);
-            st.setInt(2, lastNum);
+            st.setString(1, "%" + query + "%");
+            st.setInt(2, firstNum);
+            st.setInt(3, lastNum);
 
             ResultSet rs = st.executeQuery();
 
@@ -145,8 +146,8 @@ public class NoticeDao implements NoticeDaoable {
     public Notice getNextById(int id) {
         Notice notice = new Notice();
         String sql = 
-        "SELECT ID, TITLE FROM NOTICE_ORDERD_VIEW WHERE NUM = "
-        +"(SELECT NUM FROM notice_orderd_view WHERE ID = " + id + ") + 1";
+        "SELECT ID, TITLE FROM NOTICE_ORDERED_VIEW WHERE NUM = "
+        +"(SELECT NUM FROM notice_ordered_view WHERE ID = " + id + ") + 1";
             try {
                 Connection con = dataSource.getConnection();
                 Statement st = con.createStatement();
@@ -172,14 +173,15 @@ public class NoticeDao implements NoticeDaoable {
     }
 
     @Override
-    public int getCount() {
+    public int getCount(String filed, String query) {
         int cnt = 0;
         String sql =
-        "SELECT count(*) count FROM notice_ordered_view";
+        "SELECT count(*) count FROM notice_ordered_view WHERE " + filed + " LIKE ?";
         try {
             Connection con = dataSource.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, "%" + query + "%");
+            ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
                 cnt = rs.getInt("count");
