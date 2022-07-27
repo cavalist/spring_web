@@ -144,7 +144,10 @@
 				</ul>
 			</div>
 			
+				
+			
 			<div class="search-form margin-top first align-right">
+				
 				<h3 class="hidden">공지사항 검색폼</h3>
 				<form class="table-form">
 					<fieldset>
@@ -211,7 +214,7 @@
 	</div>
 	<ul class="-list- center">
 		<c:forEach var="n" begin="${pager.viewStart}" end="${pager.viewEnd}">
-		<li><a class="-text- orange bold" href="?p=${n}&f=${f}&q=${q}" >${n}</a></li>
+		<li><a class="-text- ${(p == n)?'orange':''} bold" href="?p=${n}&f=${f}&q=${q}" >${n}</a></li>
 		</c:forEach>
 				
 	</ul>
